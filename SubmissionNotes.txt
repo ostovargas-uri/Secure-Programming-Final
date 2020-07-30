@@ -1,0 +1,1 @@
+Here is the final payroll app with last minute touches. The project folder is a Netbeans project so you can use the IDE to get setup. I packaged in the driver I used incase there's any inconsistencies. The database connection uses the root account with the username "root", and password "sesame123". The SQL script will setup the schema required to interface with the application.

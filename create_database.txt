@@ -1,0 +1,111 @@
+/**
+* Create the database named users, its tables, and a user
+**/
+
+DROP DATABASE IF EXISTS accounts;
+
+CREATE DATABASE accounts;
+
+USE accounts;
+
+CREATE TABLE users (
+	userid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	username VARCHAR(16) NOT NULL,
+	hpwd CHAR(64) NOT NULL,
+	salt INT NOT NULL,
+	question VARCHAR(150) NOT NULL,
+	answer VARCHAR(150) NOT NULL,
+	role TINYINT NOT NULL,
+	
+	PRIMARY KEY(userid)
+);
+
+ALTER TABLE users AUTO_INCREMENT = 10001;
+
+CREATE TABLE employees (
+	employeeid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	userid INT UNSIGNED NOT NULL,
+	
+	firstname VARCHAR(20) NOT NULL,
+	lastname VARCHAR(20) NOT NULL,
+	address VARCHAR(30) NOT NULL,
+	city VARCHAR(20) NOT NULL,
+	state VARCHAR(15) NOT NULL,
+	dob DATE NOT NULL,
+	email VARCHAR(30) NOT NULL,
+	
+	wage FLOAT,
+	ytd_earned FLOAT,
+	
+	PRIMARY KEY(employeeid),
+	FOREIGN KEY(userid) REFERENCES users(userid) ON DELETE CASCADE
+);
+
+ALTER TABLE employees AUTO_INCREMENT = 101;
+
+CREATE TABLE employee_stubs (
+	stubid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	employeeid INT UNSIGNED NOT NULL,
+	
+	paydate DATE,
+	payamount FLOAT,
+	
+	hours SMALLINT,
+	ot_hours SMALLINT,
+	
+	approval SMALLINT,
+
+	PRIMARY KEY(stubid),
+	FOREIGN KEY(employeeid) REFERENCES employees(employeeid) ON DELETE CASCADE
+);
+
+CREATE TABLE company_funds (
+	fund_name VARCHAR(15) NOT NULL,
+	funds DOUBLE NOT NULL
+);
+
+CREATE TABLE codes (
+	vcode INT NOT NULL
+);
+
+INSERT INTO company_funds (fund_name, funds) VALUES ('Company Funds', 400000.0);
+
+# CREATE USER
+INSERT INTO users (username, hpwd, salt, question, answer, role)
+	VALUES ('sam_admin', 'OL0oU4Mxfx9DfTOeGsqMTxWAhYhcPI2M5s4DZ8viikQ=', 362347911, 'What is your mother’s maiden name?', 'Mary', 1);
+	
+INSERT INTO employees (userid, firstname, lastname, address, city, state, dob, email, wage, ytd_earned) 
+	VALUES (10001, 'Sam', 'Adams', '255 Berkley Avenue', 'Los Angeles', 'California', '1980-04-01', 'sam@starway.com', 50.0, 76549.00);
+	
+INSERT INTO employee_stubs (employeeid, paydate, payamount, hours, ot_hours)
+	VALUES (101, '2018-09-15', 2400.25, 40, 3);
+
+INSERT INTO users (username, hpwd, salt, question, answer, role)
+	VALUES ('jsmith', 'OL0oU4Mxfx9DfTOeGsqMTxWAhYhcPI2M5s4DZ8viikQ=', 362347911, 'What is your mother’s maiden name?', 'Mary', 0);
+
+INSERT INTO employees (userid, firstname, lastname, address, city, state, dob, email, wage, ytd_earned) 
+	VALUES (10002, 'John', 'Smith', '255 Starway Avenue', 'Los Angeles', 'California', '2000-01-01', 'jsmith@starway.com', 17.50, 3400.0);
+
+INSERT INTO employee_stubs (employeeid, paydate, payamount, hours, ot_hours, approval)
+	VALUES (102, '2018-09-15', 453.56, 35, 0, 1);
+
+INSERT INTO employee_stubs (employeeid, paydate, payamount, hours, ot_hours, approval)
+	VALUES (102, '2018-09-30', 600, 40, 0, 0);
+ 
+INSERT INTO employee_stubs (employeeid, paydate, payamount, hours, ot_hours, approval)
+	VALUES (102, '2018-10-15', 300, 20, 0, 1);
+	
+INSERT INTO users (username, hpwd, salt, question, answer, role)
+	VALUES ('janesmith', 'OL0oU4Mxfx9DfTOeGsqMTxWAhYhcPI2M5s4DZ8viikQ=', 362347911, 'What is your mother’s maiden name?', 'Mary', 0);
+
+INSERT INTO employees (userid, firstname, lastname, address, city, state, dob, email, wage, ytd_earned) 
+	VALUES (10003, 'Jane', 'Smith', '255 Starway Avenue', 'Los Angeles', 'California', '2001-01-01', 'janesmith@starway.com', 20, 3700.0);
+
+INSERT INTO employee_stubs (employeeid, paydate, payamount, hours, ot_hours, approval)
+	VALUES (103, '2018-09-15', 453.56, 35, 0, 1);
+
+INSERT INTO employee_stubs (employeeid, paydate, payamount, hours, ot_hours, approval)
+	VALUES (103, '2018-09-30', 615.0, 40, 0, 0);
+ 
+INSERT INTO employee_stubs (employeeid, paydate, payamount, hours, ot_hours, approval)
+	VALUES (103, '2018-10-15', 300, 20, 0, 0);
